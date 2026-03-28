@@ -15,7 +15,7 @@ pipeline {
 
         stage('Git Checkout') {
             steps {
-                git 'https://github.com/Wakekar/Ecommerce-App-Kastro.git'
+                git 'https://github.com/KastroVKiran/Ecommerce-App-Kastro.git'
             }
         }
 
@@ -100,7 +100,6 @@ pipeline {
             }
         }
 
-        // ✅ NOW correctly inside stages
         stage('Deploy To Kubernetes') {
             steps {
                 withKubeConfig(
@@ -155,7 +154,10 @@ pipeline {
                     subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
                     body: body,
                     to: 'aniket241192@gmail.com',
-                    mimeType: 'text/html'
+                    from: 'jenkins@example.com',
+                    replyTo: 'jenkins@example.com',
+                    mimeType: 'text/html',
+                    attachmentsPattern: 'trivy-image-report.html'
                 )
             }
         }
