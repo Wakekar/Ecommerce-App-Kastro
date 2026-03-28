@@ -433,13 +433,13 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-        DOCKER_IMAGE = "kastrov/ecommerce:latest"
+        DOCKER_IMAGE = "aniketwakekar/ecommerce:latest"
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git 'https://github.com/KastroVKiran/Ecommerce-App-Kastro.git'
+                git 'https://github.com/Wakekar/Ecommerce-App-Kastro.git'
             }
         }
 
@@ -550,7 +550,7 @@ pipeline {
                 emailext (
                     subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
                     body: body,
-                    to: 'kastrokiran@gmail.com',
+                    to: 'aniket241192@gmail.com',
                     from: 'jenkins@example.com',
                     replyTo: 'jenkins@example.com',
                     mimeType: 'text/html',
@@ -560,6 +560,7 @@ pipeline {
         }
     }
 }
+
 
 ---------------------------------------
 Deploying to EKS Cluster
