@@ -132,7 +132,7 @@ eksctl create nodegroup --cluster=aniket-eks \
                        --nodes-max=4 \
                        --node-volume-size=20 \
                        --ssh-access \
-                       --ssh-public-key=ecommerce \
+                       --ssh-public-key=DevOps \
                        --managed \
                        --asg-access \
                        --external-dns-access \
