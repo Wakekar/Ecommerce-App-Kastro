@@ -12,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Git Checkout') {
             steps {
                 git 'https://github.com/Wakekar/Ecommerce-App-Kastro.git'
@@ -98,6 +99,34 @@ pipeline {
                 }
             }
         }
+
+        // ✅ NOW correctly inside stages
+        stage('Deploy To Kubernetes') {
+            steps {
+                withKubeConfig(
+                    clusterName: 'aniket-eks',
+                    credentialsId: 'k8-token',
+                    namespace: 'webapps',
+                    serverUrl: 'https://2BB7BD2C5ADBA2B3087DEB638955CF81.sk1.ap-south-1.eks.amazonaws.com'
+                ) {
+                    sh "kubectl apply -f deployment-service.yaml -n webapps"
+                }
+            }
+        }
+
+        stage('Verify the Deployment') {
+            steps {
+                withKubeConfig(
+                    clusterName: 'aniket-eks',
+                    credentialsId: 'k8-token',
+                    namespace: 'webapps',
+                    serverUrl: 'https://2BB7BD2C5ADBA2B3087DEB638955CF81.sk1.ap-south-1.eks.amazonaws.com'
+                ) {
+                    sh "kubectl get pods -n webapps"
+                    sh "kubectl get svc -n webapps"
+                }
+            }
+        }
     }
 
     post {
@@ -126,10 +155,7 @@ pipeline {
                     subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
                     body: body,
                     to: 'aniket241192@gmail.com',
-                    from: 'jenkins@example.com',
-                    replyTo: 'jenkins@example.com',
-                    mimeType: 'text/html',
-                    attachmentsPattern: 'trivy-image-report.html'
+                    mimeType: 'text/html'
                 )
             }
         }
